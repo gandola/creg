@@ -16,6 +16,8 @@
 package com.pg.creg.expr.quantifier;
 
 import com.pg.creg.exception.CregException;
+import static com.pg.creg.util.OperatorPosition.*;
+import static com.pg.creg.util.StringUtils.*;
 
 /**
  * Makes the given QuantifierExpression a reluctant quantifier.
@@ -30,7 +32,8 @@ import com.pg.creg.exception.CregException;
  * Regex: .*+foo<br>
  * Input string to search: xfooxxxxxxfoo.<br>
  * Match with the text "xfoo" starting at index 0 and ending at index 4. <br>
- * Match with the text "xxxxxxfoo" starting at index 4 and ending at index 13. <br>
+ * Match with the text "xxxxxxfoo" starting at index 4 and ending at index 13.
+ * <br>
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
@@ -43,7 +46,6 @@ public class Reluctant implements QuantifierExpression {
     }
 
     public void eval(StringBuilder builder) throws CregException {
-        expr.eval(builder);
-        builder.append("?");
+        appendExpr(expr, "?", builder, END);
     }
 }

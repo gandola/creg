@@ -17,6 +17,8 @@ package com.pg.creg.expr.quantifier;
 
 import com.pg.creg.expr.Expression;
 import com.pg.creg.exception.CregException;
+import static com.pg.creg.util.OperatorPosition.*;
+import static com.pg.creg.util.StringUtils.*;
 
 /**
  * Quantifier expression (+) which indicates to catch one or more repetitions of
@@ -38,7 +40,6 @@ public class OneOrMore implements QuantifierExpression {
     }
 
     public void eval(StringBuilder builder) throws CregException {
-        expr.eval(builder);
-        builder.append("+");
+        appendExpr(expr, "+", builder, END);
     }
 }

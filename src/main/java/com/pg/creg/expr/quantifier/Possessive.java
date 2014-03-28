@@ -16,6 +16,8 @@
 package com.pg.creg.expr.quantifier;
 
 import com.pg.creg.exception.CregException;
+import static com.pg.creg.util.OperatorPosition.*;
+import static com.pg.creg.util.StringUtils.*;
 
 /**
  * Makes the given QuantifierExpression a possessive quantifier.
@@ -41,7 +43,6 @@ public class Possessive implements QuantifierExpression {
     }
 
     public void eval(StringBuilder builder) throws CregException {
-        expr.eval(builder);
-        builder.append("+");
+        appendExpr(expr, "+", builder, END);
     }
 }
