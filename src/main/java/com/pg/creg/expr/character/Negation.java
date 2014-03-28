@@ -16,6 +16,8 @@
 package com.pg.creg.expr.character;
 
 import com.pg.creg.exception.CregException;
+import static com.pg.creg.util.OperatorPosition.*;
+import static com.pg.creg.util.StringUtils.*;
 
 /**
  * Applies negation operator over the given CharacterExpression. [^a-z]
@@ -30,7 +32,6 @@ public class Negation implements CharacterExpression {
     }
 
     public void eval(StringBuilder builder) throws CregException {
-        builder.append("^");
-        expr.eval(builder);
+        appendExpr(expr, "^", builder, BEGIN);
     }
 }
