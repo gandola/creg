@@ -18,6 +18,8 @@ At this point it still has many things to develop, improve and re-think and it's
                         l("."),
                         within(cls(word()), 2, 4)
                 );
+    String regex = Creg.toString(expr);
+    assertEquals(regex, "[\\w-+_.]+@[\\w-+_.]+\\.[\\w]{2,4}");
     assertTrue(Creg.matches("test@myserver.com", expr));
     assertFalse(Creg.matches("test", expr));
     ```
@@ -26,7 +28,7 @@ At this point it still has many things to develop, improve and re-think and it's
 
     ```java
     Expression expr
-                = join(
+                = Creg.toExpr(
                         lineStartsWith(group(or(l("http"), l("https")))),
                         l("://"),
                         zeroOrMore(any())
@@ -42,8 +44,8 @@ At this point it still has many things to develop, improve and re-think and it's
 
 # Documentation
 
-[Java Regex](http://docs.oracle.com/javase/tutorial/essential/regex/)
-[Regular Expressions](http://www.regular-expressions.info/)
+* [Java Regex](http://docs.oracle.com/javase/tutorial/essential/regex/)
+* [Regular Expressions](http://www.regular-expressions.info/)
 
 
 ## TODO list
