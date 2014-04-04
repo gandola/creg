@@ -41,7 +41,7 @@ At this point it still has many things to develop, improve and re-think and it's
     assertFalse(Creg.matches(" https://www.google.com/", expr));
     assertFalse(Creg.matches("hRttps://www.google.com/", expr));
     ```
-* Validate password with 8-10 chars and at least 2 numbers:
+* Password validation with 8-10 chars and at least 2 numbers:
 
     ```java
     Expression expr
