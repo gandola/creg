@@ -18,8 +18,6 @@ package com.pg.creg;
 import com.pg.creg.expr.Expression;
 import static com.pg.creg.PatternUtils.*;
 import com.pg.creg.exception.CregException;
-import com.pg.creg.expr.character.Any;
-import com.pg.creg.expr.character.Literal;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
