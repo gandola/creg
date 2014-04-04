@@ -29,7 +29,7 @@ import java.util.regex.PatternSyntaxException;
 public class Creg {
 
     /**
-     * Checks if the given input matches with the given Regex.
+     * Checks if the given input matches exactly with the given Regex.
      *
      * @param input to verify.
      * @param exprs Regex to run.
@@ -41,6 +41,23 @@ public class Creg {
         Pattern pattern = eval(exprs);
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
+    }
+    
+    /**
+     * Tells if any match was found.
+     * 
+     * Attention: can be a partial match.
+     *
+     * @param input to verify.
+     * @param exprs Regex to run.
+     * @return true if exists any match, false otherwise.
+     * @throws CregException if any problem occurs evaluating or compiling the
+     * given expressions.
+     */
+    public static boolean hasMatch(String input, Expression... exprs) throws CregException {
+        Pattern pattern = eval(exprs);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.find();
     }
 
     /**
