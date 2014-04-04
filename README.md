@@ -71,7 +71,6 @@ At this point it still has many things to develop, improve and re-think and it's
 
 ## TODO list
 
-* Conditionals
 * Greg.split() and Greg.replace()
 * Default regular expressions for (Emails, URLs, etc...)
 * Validation
