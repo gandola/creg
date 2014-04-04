@@ -445,4 +445,44 @@ public class PatternUtils {
     public static Expression join(Expression... exprs) {
         return new Join(exprs);
     }
+
+    /**
+     * Creates a new positive LookAhead expression.
+     *
+     * @param expr expression to look.
+     * @return Expression object.
+     */
+    public static Expression head(Expression expr) {
+        return new LookAhead(expr, false);
+    }
+
+    /**
+     * Creates a new negative LookAhead expression.
+     *
+     * @param expr expression to look.
+     * @return Expression object.
+     */
+    public static Expression nHead(Expression expr) {
+        return new LookAhead(expr, true);
+    }
+
+    /**
+     * Creates a new positive LookBehind expression.
+     *
+     * @param expr expression to look.
+     * @return Expression object.
+     */
+    public static Expression behind(Expression expr) {
+        return new LookBehind(expr, false);
+    }
+
+    /**
+     * Creates a new negative LookBehind expression.
+     *
+     * @param expr expressions to look.
+     * @return Expression object.
+     */
+    public static Expression nBehind(Expression expr) {
+        return new LookBehind(expr, true);
+    }
 }

@@ -102,4 +102,111 @@ public class ExprBuilderTest {
         assertFalse(Creg.matches("TestRegex", expr));
         assertFalse(Creg.matches("test", expr));
     }
+    
+    @Test
+    public void testPositiveLookAhead() throws CregException {
+        Expression expr
+                = Creg.toExpr(
+                        head(l("Messi")),
+                        zeroOrMore(any()),
+                        l("Ronaldo"),
+                        zeroOrMore(any())
+                );
+        //Matches with sentences which contains Messi followed Ronaldo.
+        String regex = Creg.toString(expr);
+        assertEquals(regex, "(?=Messi).*Ronaldo.*");
+        assertFalse(Creg.matches("Ronaldo is the best player in the world.", expr));
+        assertFalse(Creg.matches("Messi is the best player in the world.", expr));
+        assertTrue(Creg.matches("Messi and Ronaldo are the best players in the world.", expr));
+        assertFalse(Creg.matches("Ronaldo and Messi are the best players in the world.", expr));
+        assertFalse(Creg.matches("Ronaldo is a Real Madrid player.", expr));
+    }
+    
+    @Test
+    public void testNegativeLookAhead() throws CregException {
+        Expression expr
+                = Creg.toExpr(
+                        nHead(l("Messi")),
+                        zeroOrMore(any()),
+                        l("Ronaldo"),
+                        zeroOrMore(any())
+                );
+        //Matches with sentences which do not contain Messi before Ronaldo.
+        String regex = Creg.toString(expr);
+        assertEquals(regex, "(?!Messi).*Ronaldo.*");
+        assertTrue(Creg.matches("Ronaldo is the best player in the world.", expr));
+        assertFalse(Creg.matches("Messi is the best player in the world.", expr));
+        assertFalse(Creg.matches("Messi and Ronaldo are the best players in the world.", expr));
+        assertTrue(Creg.matches("Ronaldo and Messi are the best players in the world.", expr));
+        assertTrue(Creg.matches("Ronaldo is a Real Madrid player.", expr));
+    }
+    
+    @Test
+    public void testPositiveLookBehind() throws CregException {
+        Expression expr
+                = Creg.toExpr(
+                        behind(l("Messi")),
+                        l("Ronaldo")
+                );
+        //Matches with sentences which contains Ronaldo preceded by Messi.
+        String regex = Creg.toString(expr);
+        assertEquals(regex, "(?<=Messi)Ronaldo");
+        assertFalse(Creg.matches("Messi and Ronaldo are the best players in the world.", expr));
+        assertFalse(Creg.matches("Ronaldo and Messi are the best players in the world.", expr));
+        assertFalse(Creg.matches("RonaldoMessi", expr));
+        assertFalse(Creg.matches("Ronaldo", expr));
+        assertFalse(Creg.matches("MessiRonaldo", expr));
+        
+        assertFalse(Creg.hasMatch("Messi and Ronaldo are the best players in the world.", expr));
+        assertFalse(Creg.hasMatch("Ronaldo and Messi are the best players in the world.", expr));
+        assertFalse(Creg.hasMatch("RonaldoMessi", expr));
+        assertFalse(Creg.hasMatch("Ronaldo", expr));
+        assertTrue(Creg.hasMatch("MessiRonaldo", expr));
+    }
+    
+    @Test
+    public void testNegativeLookBehind() throws CregException {
+        Expression expr
+                = Creg.toExpr(
+                        nBehind(l("Messi")),
+                        l("Ronaldo")
+                );
+        //Matches with sentences which do not contain Ronaldo preceded by Messi.
+        String regex = Creg.toString(expr);
+        assertEquals(regex, "(?<!Messi)Ronaldo");
+        assertFalse(Creg.matches("Messi and Ronaldo are the best players in the world.", expr));
+        assertFalse(Creg.matches("Ronaldo and Messi are the best players in the world.", expr));
+        assertFalse(Creg.matches("RonaldoMessi", expr));
+        assertTrue(Creg.matches("Ronaldo", expr));
+        assertFalse(Creg.matches("MessiRonaldo", expr));
+        
+        assertTrue(Creg.hasMatch("Messi and Ronaldo are the best players in the world.", expr));
+        assertTrue(Creg.hasMatch("Ronaldo and Messi are the best players in the world.", expr));
+        assertTrue(Creg.hasMatch("RonaldoMessi", expr));
+        assertTrue(Creg.hasMatch("Ronaldo", expr));
+        assertFalse(Creg.hasMatch("MessiRonaldo", expr));
+        
+    }
+    
+    @Test
+    public void testLookAheadPassword() throws CregException {
+        Expression expr
+                = Creg.toExpr(
+                        head(join(
+                                zeroOrMore(any()),
+                                exactly(digit(), 1),
+                                zeroOrMore(any()),
+                                exactly(digit(), 1),
+                                zeroOrMore(any()))),
+                        within(word(),8,10)
+                );
+        //Test if password contains at least 2 numbers and 8 to 10 digits.
+        String regex = Creg.toString(expr);
+        assertEquals(regex, "(?=.*\\d{1}.*\\d{1}.*)\\w{8,10}");
+        assertFalse(Creg.matches("password", expr));
+        assertTrue(Creg.matches("p1ssw2ord", expr));
+        assertTrue(Creg.matches("p1s3w2ord", expr));
+        assertTrue(Creg.matches("pwordd13", expr));
+        assertFalse(Creg.matches("123", expr));
+    }
 }
