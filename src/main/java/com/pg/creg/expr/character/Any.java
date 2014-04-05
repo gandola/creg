@@ -16,15 +16,23 @@
 package com.pg.creg.expr.character;
 
 import com.pg.creg.exception.CregException;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Final expression to match with any character.
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class Any implements CharacterExpression {
+public class Any extends FinalExpression implements CharacterExpression {
 
-    public void eval(StringBuilder builder) throws CregException {
-        builder.append(".");
+    public Any() {
+        super(".");
+    }
+
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

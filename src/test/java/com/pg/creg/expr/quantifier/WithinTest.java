@@ -36,32 +36,4 @@ public class WithinTest {
         instance.eval(builder);
         assertEquals(builder.toString(), "\\w{0,10}");
     }
-
-    @Test
-    public void testInvalid() throws Exception {
-        StringBuilder builder = new StringBuilder();
-        Within instance = new Within(new Word(), -1, 10);
-
-        try {
-            instance.eval(builder);
-        } catch (CregException ex) {
-            assertTrue(true);
-            return;
-        }
-        assertTrue("Should crash", false);
-    }
-
-    @Test
-    public void testInvalid1() throws Exception {
-        StringBuilder builder = new StringBuilder();
-        Within instance = new Within(new Word(), 11, 10);
-
-        try {
-            instance.eval(builder);
-        } catch (CregException ex) {
-            assertTrue(true);
-            return;
-        }
-        assertTrue("Should crash", false);
-    }
 }

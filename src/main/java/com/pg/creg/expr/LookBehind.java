@@ -16,6 +16,7 @@
 package com.pg.creg.expr;
 
 import com.pg.creg.exception.CregException;
+import static com.pg.creg.expr.ExpressionUtils.*;
 
 /**
  * Look-behind expression:<br>
@@ -28,24 +29,30 @@ import com.pg.creg.exception.CregException;
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class LookBehind implements Expression {
+public class LookBehind extends CompositeExpression{
 
     private final Expression expr;
     private final boolean negative;
 
     public LookBehind(Expression expr, boolean negative) {
+        super(SP_PARENTHESES_OPEN,  
+              negative ? OP_NEGATIVE_LOOK_BEHIND : OP_POSITIVE_LOOK_BEHIND, 
+              expr, 
+              SP_PARENTHESES_CLOSE);
         this.expr = expr;
         this.negative = negative;
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        if (expr == null) {
-            throw new CregException("LookBehind: Invalid expression.");
-        }
-        StringBuilder exprString = new StringBuilder();
-        expr.eval(exprString);
-        builder.append((!negative)
-                ? String.format("(?<=%s)", exprString.toString())
-                : String.format("(?<!%s)", exprString.toString()));
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
+    }
+    
+    public boolean isNegative() {
+        return negative;
+    }
+
+    public Expression getExpr() {
+        return expr;
     }
 }

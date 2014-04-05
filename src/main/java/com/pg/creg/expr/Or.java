@@ -16,31 +16,35 @@
 package com.pg.creg.expr;
 
 import com.pg.creg.exception.CregException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.pg.creg.expr.ExpressionUtils.*;
 
 /**
  * Adds OR operator among given expressions.
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class Or implements Expression {
-
-    private final Expression[] exprs;
-
+public class Or extends CompositeExpression {
+    
     public Or(Expression... exprs) {
-        this.exprs = exprs;
-    }
-
-    public void eval(StringBuilder builder) throws CregException {
-        for (Expression expr : exprs){
-            if (expr != null) {
-                expr.eval(builder);
-                builder.append('|');
+        super(exprs);
+        
+        List<Expression> expressionsTemp = new ArrayList<Expression>();
+        for (int i = 0; i < exprs.length; i++) {
+            if (exprs[i] != null) {
+                expressionsTemp.add(exprs[i]);
+                if (i < (exprs.length - 1)) {
+                    expressionsTemp.add(OP_OR);
+                }
             }
         }
-        int lastIndex = builder.length()-1;
-        //remove last char if is '|'
-        if(lastIndex > -1 && builder.charAt(builder.length()-1) == '|'){
-           builder.deleteCharAt(builder.length()-1);
-        }
+        this.expressions = expressionsTemp.toArray(exprs);
+    }
+
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

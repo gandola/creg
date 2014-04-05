@@ -16,15 +16,23 @@
 package com.pg.creg.expr.character;
 
 import com.pg.creg.exception.CregException;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Final expression match with all but digit \D [^0-9].
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class NonDigit implements CharacterExpression {
+public class NonDigit extends FinalExpression implements CharacterExpression {
 
-    public void eval(StringBuilder builder) throws CregException {
-        builder.append("\\D");
+    public NonDigit() {
+        super("\\D");
+    }
+
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

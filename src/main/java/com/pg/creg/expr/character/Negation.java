@@ -16,22 +16,25 @@
 package com.pg.creg.expr.character;
 
 import com.pg.creg.exception.CregException;
-import static com.pg.creg.util.OperatorPosition.*;
-import static com.pg.creg.util.StringUtils.*;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.CompositeExpression;
+import static com.pg.creg.expr.ExpressionUtils.*;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Applies negation operator over the given CharacterExpression. [^a-z]
+ *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class Negation implements CharacterExpression {
+public class Negation extends CompositeExpression implements CharacterExpression {
 
-    private final CharacterExpression expr;
-
-    public Negation(CharacterExpression expr) {
-        this.expr = expr;
+    public Negation(FinalExpression expr) {
+        super(new CharClass(OP_NOT, expr));
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        appendExpr(expr, "^", builder, BEGIN);
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

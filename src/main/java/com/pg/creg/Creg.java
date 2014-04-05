@@ -106,9 +106,23 @@ public class Creg {
             throw new CregException("Invalid expressions to evaluate.");
         }
 
-        StringBuilder builder = new StringBuilder();
-        toExpr(exprs).eval(builder);
-        return builder.toString();
+        //StringBuilder builder = new StringBuilder();
+        Evaluator evaluator = new Evaluator();
+        toExpr(exprs).accept(evaluator);
+        toExpr(exprs).accept(new Printer());
+        return evaluator.getBuilder().toString();
+    }
+    
+    public static void prettyPrint(Expression... exprs) throws CregException {
+
+        if (exprs == null || exprs.length == 0) {
+            throw new CregException("Invalid expressions to evaluate.");
+        }
+
+        //StringBuilder builder = new StringBuilder();
+        Printer printer = new Printer();
+        toExpr(exprs).accept(printer);
+        System.out.println(printer.getBuilder().toString());
     }
 
     /**

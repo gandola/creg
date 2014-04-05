@@ -15,30 +15,39 @@
  */
 package com.pg.creg.expr.quantifier;
 
-import com.pg.creg.expr.Expression;
 import com.pg.creg.exception.CregException;
+import com.pg.creg.expr.QuantifierExpression;
+import com.pg.creg.expr.Expression;
+import com.pg.creg.expr.CompositeExpression;
+import static com.pg.creg.expr.ExpressionUtils.*;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
- * Quantifier expression {N} where N > 0. It will match the given expression 
+ * Quantifier expression {N} where N > 0. It will match the given expression
  * exactly N times.
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class Exactly implements QuantifierExpression {
+public class Exactly extends CompositeExpression implements QuantifierExpression {
 
-    private final Expression expr;
     private final int nTimes;
 
     public Exactly(Expression expr, int nTimes) {
-        this.expr = expr;
+        super(expr,
+                SP_BRACKET_OPEN,
+                new FinalExpression(String.valueOf(nTimes)) {
+                },
+                SP_BRACKET_CLOSE);
         this.nTimes = nTimes;
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        if (nTimes < 1) {
-            throw new CregException("Exactly should have nTimes > 0");
-        }
-        expr.eval(builder);
-        builder.append("{").append(nTimes).append("}");
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
+    }
+
+    public int getN_Times() {
+        return nTimes;
     }
 }

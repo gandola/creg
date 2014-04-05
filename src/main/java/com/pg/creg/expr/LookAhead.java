@@ -16,36 +16,45 @@
 package com.pg.creg.expr;
 
 import com.pg.creg.exception.CregException;
+import static com.pg.creg.expr.ExpressionUtils.*;
 
 /**
  * Look-ahead expression:<br>
  * <br>
  * (?=X) X, via zero-width positive look-ahead.<br>
  * (?!X) X, via zero-width negative look-ahead<br>
- * 
- * Negative Look-ahead is used when you want to match something not followed by something else.<br>
- * Positive Look-ahead is used when you want to match something followed by something else.<br>
+ *
+ * Negative Look-ahead is used when you want to match something not followed by
+ * something else.<br>
+ * Positive Look-ahead is used when you want to match something followed by
+ * something else.<br>
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class LookAhead implements Expression {
-
+public class LookAhead extends CompositeExpression {
+    
     private final Expression expr;
     private final boolean negative;
-
+    
     public LookAhead(Expression expr, boolean negative) {
+        super(SP_PARENTHESES_OPEN,
+                negative ? OP_NEGATIVE_LOOK_AHEAD : OP_POSITIVE_LOOK_AHEAD,
+                expr,
+                SP_PARENTHESES_CLOSE);
         this.expr = expr;
         this.negative = negative;
     }
-
-    public void eval(StringBuilder builder) throws CregException {
-        if (expr == null) {
-            throw new CregException("LookAhead: Invalid expression.");
-        }
-        StringBuilder exprString = new StringBuilder();
-        expr.eval(exprString);
-        builder.append((!negative)
-                ? String.format("(?=%s)", exprString.toString())
-                : String.format("(?!%s)", exprString.toString()));
+    
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
+    }
+    
+    public Expression getExpr() {
+        return expr;
+    }
+    
+    public boolean isNegative() {
+        return negative;
     }
 }

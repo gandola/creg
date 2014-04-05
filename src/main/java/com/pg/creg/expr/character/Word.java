@@ -16,18 +16,23 @@
 package com.pg.creg.expr.character;
 
 import com.pg.creg.exception.CregException;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Final expression match with a word \w [a-zA-Z_0-9].
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class Word implements CharacterExpression {
+public class Word extends FinalExpression implements CharacterExpression {
 
     public Word() {
+        super("\\w");
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        builder.append("\\w");
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

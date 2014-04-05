@@ -33,6 +33,6 @@ public class IntersectionTest {
         StringBuilder builder = new StringBuilder();
         Intersection instance = new Intersection(new Word(), new Digit());
         instance.eval(builder);
-        assertEquals(builder.toString(), "\\w&&[\\d]");
+        assertEquals(builder.toString(), "[\\w&&[\\d]]");
     }
 }

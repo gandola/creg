@@ -15,6 +15,8 @@
  */
 package com.pg.creg;
 
+import com.pg.creg.expr.QuantifierExpression;
+import com.pg.creg.expr.CharacterExpression;
 import com.pg.creg.expr.*;
 import com.pg.creg.expr.Expression;
 import com.pg.creg.expr.boundary.*;

@@ -33,4 +33,5 @@ public interface Expression {
      * @throws CregException if an error occurs during the expression evaluation.
      */
     void eval(StringBuilder builder) throws CregException;
+    void accept(Visitor visitor) throws CregException;
 }

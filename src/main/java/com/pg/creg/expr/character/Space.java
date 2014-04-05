@@ -16,15 +16,23 @@
 package com.pg.creg.expr.character;
 
 import com.pg.creg.exception.CregException;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Final expression match with a whitespace \s characters.
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class Space implements CharacterExpression {
+public class Space extends FinalExpression implements CharacterExpression {
 
-    public void eval(StringBuilder builder) throws CregException {
-        builder.append("\\s");
+    public Space() {
+        super("\\s");
+    }
+
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

@@ -16,25 +16,25 @@
 package com.pg.creg.expr.character;
 
 import com.pg.creg.exception.CregException;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Creates char list to match like [ab.+-7].
- * 
+ *
  * Chars are not escaped. For escaped sequence you should use literal.
- * 
+ *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class CharList implements CharacterExpression {
-
-    private final char[] chars;
+public class CharList extends FinalExpression implements CharacterExpression {
 
     public CharList(char... chars) {
-        this.chars = chars;
+        super(new String(chars));
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        for (char ch : chars) {
-            builder.append(ch);
-        }
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

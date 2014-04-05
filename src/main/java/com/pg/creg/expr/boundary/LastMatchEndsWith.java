@@ -16,24 +16,25 @@
 package com.pg.creg.expr.boundary;
 
 import com.pg.creg.exception.CregException;
-import com.pg.creg.expr.character.CharacterExpression;
-import static com.pg.creg.util.OperatorPosition.*;
-import static com.pg.creg.util.StringUtils.*;
+import com.pg.creg.expr.BoundaryExpression;
+import com.pg.creg.expr.CompositeExpression;
+import static com.pg.creg.expr.ExpressionUtils.*;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Last match ends with given expression word\G.
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class LastMatchEndsWith implements BoundaryExpression {
+public class LastMatchEndsWith extends CompositeExpression implements BoundaryExpression {
 
-    private final CharacterExpression expr;
-    
     public LastMatchEndsWith(CharacterExpression expr) {
-        this.expr = expr;
+        super(expr, SP_LME);
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        appendExpr(expr, "\\G", builder, END);
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

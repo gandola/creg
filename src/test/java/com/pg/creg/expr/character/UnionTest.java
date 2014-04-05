@@ -33,6 +33,6 @@ public class UnionTest {
         StringBuilder builder = new StringBuilder();
         Union instance = new Union(new Word(), new Digit());
         instance.eval(builder);
-        assertEquals(builder.toString(), "\\w[\\d]");
+        assertEquals(builder.toString(), "[\\w[\\d]]");
     }
 }

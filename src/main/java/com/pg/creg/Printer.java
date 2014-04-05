@@ -13,39 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pg.creg.expr.character;
+package com.pg.creg;
 
 import com.pg.creg.exception.CregException;
-import com.pg.creg.expr.CharacterExpression;
-import com.pg.creg.expr.FinalExpression;
-import com.pg.creg.expr.Visitor;
+import com.pg.creg.expr.Expression;
+import com.pg.creg.expr.Group;
+import com.pg.creg.expr.Join;
+import com.pg.creg.expr.LookAhead;
+import com.pg.creg.expr.LookBehind;
+import com.pg.creg.expr.character.CharClass;
 
 /**
- * Creates char range to match like [a-z].
+ * Printer visitor.
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class CharRange extends FinalExpression implements CharacterExpression {
+public class Printer extends AbstractVisitor {
 
-    private final char start;
-    private final char end;
-
-    public CharRange(char start, char end) {
-        super(String.format("%s-%s", start, end));
-        this.start = start;
-        this.end = end;
+    public Printer() {
     }
 
     @Override
-    public void accept(Visitor visitor) throws CregException {
-        visitor.visit(this);
+    public void visit(Group expr) throws CregException {
+        getBuilder().append("\n");
+        super.visit(expr);
     }
 
-    public char getEnd() {
-        return end;
+    @Override
+    public void visit(LookAhead expr) throws CregException {
+        getBuilder().append("\n");
+        super.visit(expr);
     }
 
-    public char getStart() {
-        return start;
+    @Override
+    public void visit(LookBehind expr) throws CregException {
+        getBuilder().append("\n");
+        super.visit(expr);
     }
 }

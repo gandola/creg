@@ -16,23 +16,21 @@
 package com.pg.creg.expr;
 
 import com.pg.creg.exception.CregException;
+import static com.pg.creg.expr.ExpressionUtils.*;
 
 /**
  * Creates a group with given expression. (expr)
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class Group implements Expression {
-
-    private final Expression expr;
+public class Group extends CompositeExpression {
 
     public Group(Expression expr) {
-        this.expr = expr;
+        super(SP_PARENTHESES_OPEN, expr, SP_PARENTHESES_CLOSE);
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        builder.append("(");
-        expr.eval(builder);
-        builder.append(")");
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

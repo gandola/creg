@@ -16,23 +16,24 @@
 package com.pg.creg.expr.character;
 
 import com.pg.creg.exception.CregException;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.CompositeExpression;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Applies union operator over the given Character expressions. [a-d[m-p]]
+ *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class Union implements CharacterExpression {
+public class Union extends CompositeExpression implements CharacterExpression {
 
-    private final CharacterExpression expr1;
-    private final CharacterExpression expr2;
-
-    public Union(CharacterExpression expr1, CharacterExpression expr2) {
-        this.expr1 = expr1;
-        this.expr2 = expr2;
+    public Union(FinalExpression right, FinalExpression left) {
+        super(new CharClass(right, new CharClass(left)));
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        expr1.eval(builder);
-        new CharClass(expr2).eval(builder);
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

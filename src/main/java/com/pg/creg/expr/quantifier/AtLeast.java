@@ -15,8 +15,13 @@
  */
 package com.pg.creg.expr.quantifier;
 
-import com.pg.creg.expr.Expression;
 import com.pg.creg.exception.CregException;
+import com.pg.creg.expr.QuantifierExpression;
+import com.pg.creg.expr.Expression;
+import com.pg.creg.expr.CompositeExpression;
+import static com.pg.creg.expr.ExpressionUtils.*;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Quantifier expression {N,} where N. It will match the given expression at
@@ -24,21 +29,26 @@ import com.pg.creg.exception.CregException;
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class AtLeast implements QuantifierExpression {
+public class AtLeast extends CompositeExpression implements QuantifierExpression {
 
-    private final Expression expr;
     private final int nTimes;
 
     public AtLeast(Expression expr, int nTimes) {
-        this.expr = expr;
+        super(expr,
+                SP_BRACKET_OPEN,
+                new FinalExpression(String.valueOf(nTimes)) {
+                },
+                SP_COMMA,
+                SP_BRACKET_CLOSE);
         this.nTimes = nTimes;
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        if (nTimes < 0) {
-            throw new CregException("AtLeast should have nTimes > -1");
-        }
-        expr.eval(builder);
-        builder.append("{").append(nTimes).append(",}");
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
+    }
+
+    public int getN_Times() {
+        return nTimes;
     }
 }
