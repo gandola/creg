@@ -16,12 +16,9 @@
 package com.pg.creg;
 
 import com.pg.creg.exception.CregException;
-import com.pg.creg.expr.Expression;
 import com.pg.creg.expr.Group;
-import com.pg.creg.expr.Join;
 import com.pg.creg.expr.LookAhead;
 import com.pg.creg.expr.LookBehind;
-import com.pg.creg.expr.character.CharClass;
 
 /**
  * Printer visitor.
