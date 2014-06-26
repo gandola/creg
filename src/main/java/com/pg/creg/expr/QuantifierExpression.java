@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pg.creg.expr.boundary;
-
-import com.pg.creg.expr.Expression;
+package com.pg.creg.expr;
 
 /**
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public interface BoundaryExpression extends Expression {
+public interface QuantifierExpression extends Expression {
 
 }

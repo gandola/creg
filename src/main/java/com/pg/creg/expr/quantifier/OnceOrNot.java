@@ -15,36 +15,37 @@
  */
 package com.pg.creg.expr.quantifier;
 
-import com.pg.creg.expr.Expression;
 import com.pg.creg.exception.CregException;
-import static com.pg.creg.util.OperatorPosition.*;
-import static com.pg.creg.util.StringUtils.*;
+import com.pg.creg.expr.QuantifierExpression;
+import com.pg.creg.expr.CompositeExpression;
+import com.pg.creg.expr.Expression;
+import static com.pg.creg.expr.ExpressionUtils.*;
+import com.pg.creg.expr.Visitor;
 
 /**
- * Quantifier expression (*) which indicates to catch zero or more repetitions of
- * the given expression.
- * 
+ * Quantifier expression (*) which indicates to catch zero or more repetitions
+ * of the given expression.
+ *
  * Example: <br>
- *     Regex: a?<br>
- *     Input string to search: aaaaa<br>
- *     Match with the text "a" starting at index 0 and ending at index 1.<br>
- *     Match with the text "a" starting at index 1 and ending at index 2.<br>
- *     Match with the text "a" starting at index 2 and ending at index 3.<br>
- *     Match with the text "a" starting at index 3 and ending at index 4.<br>
- *     Match with the text "a" starting at index 4 and ending at index 5.<br>
- *     Match with the text "" starting at index 5 and ending at index 5.<br>
- * 
+ * Regex: a?<br>
+ * Input string to search: aaaaa<br>
+ * Match with the text "a" starting at index 0 and ending at index 1.<br>
+ * Match with the text "a" starting at index 1 and ending at index 2.<br>
+ * Match with the text "a" starting at index 2 and ending at index 3.<br>
+ * Match with the text "a" starting at index 3 and ending at index 4.<br>
+ * Match with the text "a" starting at index 4 and ending at index 5.<br>
+ * Match with the text "" starting at index 5 and ending at index 5.<br>
+ *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class OnceOrNot implements QuantifierExpression {
-
-    private final Expression expr;
+public class OnceOrNot extends CompositeExpression implements QuantifierExpression {
 
     public OnceOrNot(Expression expr) {
-        this.expr = expr;
+        super(expr, OP_OPTIONAL);
     }
 
-    public void eval(StringBuilder builder) throws CregException{
-        appendExpr(expr, "?", builder, END);
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

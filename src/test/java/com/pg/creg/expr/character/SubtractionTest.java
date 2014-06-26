@@ -33,7 +33,7 @@ public class SubtractionTest {
         StringBuilder builder = new StringBuilder();
         Subtraction instance = new Subtraction(new Word(), new Digit());
         instance.eval(builder);
-        assertEquals(builder.toString(), "\\w&&[^\\d]");
+        assertEquals(builder.toString(), "[\\w&&[^\\d]]");
     }
     
 }

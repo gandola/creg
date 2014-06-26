@@ -15,7 +15,6 @@
  */
 package com.pg.creg.expr.quantifier;
 
-import com.pg.creg.exception.CregException;
 import com.pg.creg.expr.character.Word;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -35,19 +34,5 @@ public class AtLeastTest {
         AtLeast instance = new AtLeast(new Word(), 4);
         instance.eval(builder);
         assertEquals(builder.toString(), "\\w{4,}");
-    }
-
-    @Test
-    public void testInvalid() throws Exception {
-        StringBuilder builder = new StringBuilder();
-        AtLeast instance = new AtLeast(new Word(), -1);
-
-        try {
-            instance.eval(builder);
-        } catch (CregException ex) {
-            assertTrue(true);
-            return;
-        }
-        assertTrue("Should crash", false);
     }
 }

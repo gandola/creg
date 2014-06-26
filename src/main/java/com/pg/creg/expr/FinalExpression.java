@@ -13,14 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pg.creg.expr.quantifier;
+package com.pg.creg.expr;
 
-import com.pg.creg.expr.Expression;
+import com.pg.creg.exception.CregException;
 
 /**
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public interface QuantifierExpression extends Expression {
+public abstract class FinalExpression implements Expression{
 
+    private final String expression;
+
+    public FinalExpression(String expression) {
+        this.expression = expression;
+    }
+
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void eval(StringBuilder builder) throws CregException {
+        builder.append(expression);
+    }
 }

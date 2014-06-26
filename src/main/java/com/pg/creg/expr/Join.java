@@ -22,17 +22,14 @@ import com.pg.creg.exception.CregException;
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class Join implements Expression {
-
-    private final Expression[] exprs;
+public class Join extends CompositeExpression {
 
     public Join(Expression... exprs) {
-        this.exprs = exprs;
+        super(exprs);
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        for (Expression expr : exprs) {
-            expr.eval(builder);
-        }
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this); //To change body of generated methods, choose Tools | Templates.
     }
 }

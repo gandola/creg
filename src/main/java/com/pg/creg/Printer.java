@@ -13,26 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pg.creg.expr.character;
+package com.pg.creg;
 
 import com.pg.creg.exception.CregException;
-import com.pg.creg.expr.CharacterExpression;
-import com.pg.creg.expr.FinalExpression;
-import com.pg.creg.expr.Visitor;
+import com.pg.creg.expr.Group;
+import com.pg.creg.expr.LookAhead;
+import com.pg.creg.expr.LookBehind;
 
 /**
- * Final expression match with all but word \W [^a-zA-Z_0-9].
+ * Printer visitor.
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class NonWord extends FinalExpression implements CharacterExpression {
+public class Printer extends AbstractVisitor {
 
-    public NonWord() {
-        super("\\W");
+    public Printer() {
     }
 
     @Override
-    public void accept(Visitor visitor) throws CregException {
-        visitor.visit(this);
+    public void visit(Group expr) throws CregException {
+        getBuilder().append("\n");
+        super.visit(expr);
+    }
+
+    @Override
+    public void visit(LookAhead expr) throws CregException {
+        getBuilder().append("\n");
+        super.visit(expr);
+    }
+
+    @Override
+    public void visit(LookBehind expr) throws CregException {
+        getBuilder().append("\n");
+        super.visit(expr);
     }
 }

@@ -15,24 +15,37 @@
  */
 package com.pg.creg.expr.character;
 
-import com.pg.creg.expr.Expression;
 import com.pg.creg.exception.CregException;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Creates char range to match like [a-z].
+ *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class CharRange implements CharacterExpression {
+public class CharRange extends FinalExpression implements CharacterExpression {
 
     private final char start;
     private final char end;
 
     public CharRange(char start, char end) {
-         this.start = start;
+        super(String.format("%s-%s", start, end));
+        this.start = start;
         this.end = end;
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        builder.append(start).append("-").append(end);
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
+    }
+
+    public char getEnd() {
+        return end;
+    }
+
+    public char getStart() {
+        return start;
     }
 }

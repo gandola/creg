@@ -16,6 +16,9 @@
 package com.pg.creg.expr.character;
 
 import com.pg.creg.exception.CregException;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.FinalExpression;
+import com.pg.creg.expr.Visitor;
 import static com.pg.creg.util.StringUtils.escapeRegex;
 
 /**
@@ -23,15 +26,14 @@ import static com.pg.creg.util.StringUtils.escapeRegex;
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class Literal implements CharacterExpression {
-    
-    private final String literal;
+public class Literal extends FinalExpression implements CharacterExpression {
 
     public Literal(String literal) {
-        this.literal = literal;
+        super(escapeRegex(literal));
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        builder.append(escapeRegex(literal));
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

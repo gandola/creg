@@ -13,36 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pg.creg.expr.character;
+package com.pg.creg.expr;
 
 import com.pg.creg.exception.CregException;
-import com.pg.creg.expr.CharacterExpression;
-import com.pg.creg.expr.CompositeExpression;
-import com.pg.creg.expr.Expression;
-import static com.pg.creg.expr.ExpressionUtils.*;
-import com.pg.creg.expr.Visitor;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
- * Creates a group with given expression. [expr]
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class CharClass extends CompositeExpression implements CharacterExpression{
+public abstract class CompositeExpression implements Expression {
 
-    public CharClass(final Expression... exprs) {
-        super(new ArrayList<Expression>() {
-            {
-                add(SP_R_BRACKET_OPEN);
-                addAll(Arrays.asList(exprs));
-                add(SP_R_BRACKET_CLOSE);
-            }
-        }.toArray(new Expression[1]));
+    protected Expression[] expressions;
+
+    public CompositeExpression(Expression... expressions) {
+        this.expressions = expressions;
     }
 
-    @Override
+    public void eval(StringBuilder builder) throws CregException {
+        for (Expression exp : expressions){
+            exp.eval(builder);
+        }
+    }
+
     public void accept(Visitor visitor) throws CregException {
         visitor.visit(this);
+    }
+
+    /**
+     * Gets the expressions.
+     *
+     * @return CharacterExpression[] expression instance.
+     */
+    public Expression[] getExpressions() {
+        return expressions;
     }
 }

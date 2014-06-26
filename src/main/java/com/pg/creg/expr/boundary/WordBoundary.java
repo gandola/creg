@@ -16,26 +16,36 @@
 package com.pg.creg.expr.boundary;
 
 import com.pg.creg.exception.CregException;
-import com.pg.creg.expr.character.CharacterExpression;
+import com.pg.creg.expr.BoundaryExpression;
+import com.pg.creg.expr.CompositeExpression;
+import static com.pg.creg.expr.ExpressionUtils.*;
+import com.pg.creg.expr.CharacterExpression;
+import com.pg.creg.expr.Visitor;
 import com.pg.creg.util.OperatorPosition;
-import static com.pg.creg.util.StringUtils.*;
+import static com.pg.creg.util.OperatorPosition.*;
 
 /**
  * WordBoundary boundary in the beginning of the \bword\b.
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class WordBoundary implements BoundaryExpression {
+public class WordBoundary extends CompositeExpression implements BoundaryExpression {
 
-    private final CharacterExpression expr;
     private final OperatorPosition position;
 
     public WordBoundary(CharacterExpression expr, OperatorPosition position) {
-        this.expr = expr;
+        super((position == BEGIN || position == BOTH) ? SP_WB : NULL_EXPR,
+                expr,
+                (position == END || position == BOTH) ? SP_WB : NULL_EXPR);
         this.position = position;
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        appendExpr(expr, "\\b", builder, position);
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
+    }
+
+    public OperatorPosition getPosition() {
+        return position;
     }
 }

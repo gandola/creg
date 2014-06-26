@@ -15,25 +15,26 @@
  */
 package com.pg.creg.expr.boundary;
 
-import com.pg.creg.expr.Expression;
 import com.pg.creg.exception.CregException;
-import static com.pg.creg.util.OperatorPosition.*;
-import static com.pg.creg.util.StringUtils.*;
+import com.pg.creg.expr.BoundaryExpression;
+import com.pg.creg.expr.Expression;
+import com.pg.creg.expr.CompositeExpression;
+import static com.pg.creg.expr.ExpressionUtils.*;
+import com.pg.creg.expr.Visitor;
 
 /**
  * Applies "input starts with" operator over the given Expression. \A[a-z]
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class InputStartsWith implements BoundaryExpression {
-
-    private final Expression expr;
+public class InputStartsWith extends CompositeExpression implements BoundaryExpression {
 
     public InputStartsWith(Expression expr) {
-        this.expr = expr;
+        super(SP_IS, expr);
     }
 
-    public void eval(StringBuilder builder) throws CregException {
-        appendExpr(expr, "\\A", builder, BEGIN);
+    @Override
+    public void accept(Visitor visitor) throws CregException {
+        visitor.visit(this);
     }
 }

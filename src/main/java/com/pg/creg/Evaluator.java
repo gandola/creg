@@ -13,26 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.pg.creg.expr.character;
-
-import org.junit.Test;
-import static org.junit.Assert.*;
+package com.pg.creg;
 
 /**
+ * Expression evaluator which visits all nodes and builds the expression.
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public class NegationTest {
+public class Evaluator extends AbstractVisitor {
 
-    /**
-     * Test of eval method, of class Negation.
-     */
-    @Test
-    public void testEval() throws Exception {
-        StringBuilder builder = new StringBuilder();
-        Negation instance = new Negation(new Word());
-        instance.eval(builder);
-        assertEquals(builder.toString(), "[^\\w]");
+    public Evaluator() {
     }
 }

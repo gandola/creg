@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pg.creg.expr.character;
+package com.pg.creg.expr;
 
 import com.pg.creg.expr.Expression;
 
@@ -21,6 +21,6 @@ import com.pg.creg.expr.Expression;
  *
  * @author Pedro Gandola <pedro.gandola@gmail.com>
  */
-public interface CharacterExpression extends Expression {
+public interface BoundaryExpression extends Expression {
 
 }
